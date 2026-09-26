@@ -1,0 +1,15 @@
+[project]
+name = "decodon"
+version = "0.1.0"
+description = "DeCodon — Decoding Codons the ML Way"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "google-genai",
+    "jinja2",
+    "numpy",
+    "python-dotenv",
+    "scikit-learn",
+    "uvicorn",
+]
