@@ -49,21 +49,21 @@ class DropletFreezingPredictor:
         n_samples = 800
 
         healthy = np.column_stack([
-            rng.normal(-0.65, 0.25, n_samples),
-            rng.normal(0.06, 0.02, n_samples),
-            rng.normal(0.38, 0.06, n_samples),
-            rng.normal(0.01, 0.03, n_samples),
-            rng.normal(3.65, 0.25, n_samples),
-            rng.normal(0.16, 0.05, n_samples),
+            rng.normal(-1.10, 0.35, n_samples),  # gravy
+            rng.normal(0.32, 0.05, n_samples),   # sticker_velcro_frac
+            rng.normal(0.45, 0.07, n_samples),   # spacer_flexibility_frac
+            rng.normal(0.02, 0.03, n_samples),   # net_charge_density
+            rng.normal(2.10, 0.30, n_samples),   # sequence_entropy
+            rng.normal(0.72, 0.12, n_samples),   # sticker_to_spacer_ratio
         ])
 
         frozen = np.column_stack([
-            rng.normal(-0.25, 0.30, n_samples),
-            rng.normal(0.11, 0.03, n_samples),
-            rng.normal(0.24, 0.06, n_samples),
-            rng.normal(0.05, 0.04, n_samples),
-            rng.normal(3.35, 0.30, n_samples),
-            rng.normal(0.45, 0.10, n_samples),
+            rng.normal(-0.75, 0.35, n_samples),  # gravy
+            rng.normal(0.40, 0.05, n_samples),   # sticker_velcro_frac
+            rng.normal(0.30, 0.07, n_samples),   # spacer_flexibility_frac
+            rng.normal(0.08, 0.04, n_samples),   # net_charge_density
+            rng.normal(2.25, 0.30, n_samples),   # sequence_entropy
+            rng.normal(1.15, 0.18, n_samples),   # sticker_to_spacer_ratio
         ])
 
         X = np.vstack([healthy, frozen])
@@ -75,8 +75,9 @@ class DropletFreezingPredictor:
         wild_seq = protein["sequence"]
         mut_seq, codon_info = apply_mutation(wild_seq, mutation_code)
 
+        # Focused 9-residue local droplet motif window around the mutation site
         pos = codon_info["position"] - 1
-        start, end = max(0, pos - 12), min(len(wild_seq), pos + 13)
+        start, end = max(0, pos - 4), min(len(wild_seq), pos + 5)
 
         wild_feats = extract_physics_features(wild_seq[start:end])
         mut_feats = extract_physics_features(mut_seq[start:end])
