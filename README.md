@@ -90,6 +90,10 @@ uv run uvicorn main:app --reload --port 8000
 Open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser.
 
 ---
+### Run complete test suite
+uv run python -m unittest discover -s tests -v
+
+---
 
 <div align="center">
   <strong>Gemini AI powered Live ML and Agentic solution</strong> • Built to decode neurodegenerative phase transitions.
