@@ -1,14 +1,15 @@
-from fastapi import FastAPI, Request
+from pathlib import Path
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from core.ml_predictor import DropletFreezingPredictor
 from core.gemini_agent import generate_mechanistic_report
 
 app = FastAPI(title="DeCodon — Decoding Codons the ML Way")
-templates = Jinja2Templates(directory="templates")
 predictor = DropletFreezingPredictor()
+
+HTML_PATH = Path(__file__).parent / "templates" / "index.html"
 
 
 class AnalyzeRequest(BaseModel):
@@ -17,8 +18,8 @@ class AnalyzeRequest(BaseModel):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def home():
+    return HTMLResponse(content=HTML_PATH.read_text(encoding="utf-8"))
 
 
 @app.post("/api/analyze")
