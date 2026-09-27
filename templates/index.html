@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeCodon — Decoding Codons in ML Way</title>
-  <!-- SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000000'/%3E%3Cg stroke='%2300b8e6' stroke-width='4.5' stroke-linecap='round'%3E%3Cline x1='37' y1='16' x2='63' y2='16'/%3E%3Cline x1='40' y1='23' x2='60' y2='23'/%3E%3Cline x1='40' y1='40' x2='60' y2='40'/%3E%3Cline x1='36' y1='47' x2='64' y2='47'/%3E%3Cline x1='36' y1='54' x2='64' y2='54'/%3E%3Cline x1='40' y1='61' x2='60' y2='61'/%3E%3Cline x1='40' y1='77' x2='60' y2='77'/%3E%3Cline x1='37' y1='84' x2='63' y2='84'/%3E%3C/g%3E%3Cpath d='M64 11 C 64 29, 36 33, 36 50 C 36 67, 64 71, 64 89' fill='none' stroke='%2300b8e6' stroke-width='7.5' stroke-linecap='round'/%3E%3Cpath d='M36 11 C 36 29, 64 33, 64 50 C 64 67, 36 71, 36 89' fill='none' stroke='%2314b866' stroke-width='7.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <!-- SVG Favicon matching your DNA Header Logo -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico?v=3" />
+  <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='3' y='3' width='94' height='94' rx='22' fill='%23000000' stroke='%230891b2' stroke-width='4'/%3E%3Cg stroke='%2300b8e6' stroke-width='4.5' stroke-linecap='round'%3E%3Cline x1='37' y1='16' x2='63' y2='16'/%3E%3Cline x1='40' y1='23' x2='60' y2='23'/%3E%3Cline x1='40' y1='40' x2='60' y2='40'/%3E%3Cline x1='36' y1='47' x2='64' y2='47'/%3E%3Cline x1='36' y1='54' x2='64' y2='54'/%3E%3Cline x1='40' y1='61' x2='60' y2='61'/%3E%3Cline x1='40' y1='77' x2='60' y2='77'/%3E%3Cline x1='37' y1='84' x2='63' y2='84'/%3E%3C/g%3E%3Cpath d='M64 11 C 64 29, 36 33, 36 50 C 36 67, 64 71, 64 89' fill='none' stroke='%2300b8e6' stroke-width='7.5' stroke-linecap='round'/%3E%3Cpath d='M36 11 C 36 29, 64 33, 64 50 C 64 67, 36 71, 36 89' fill='none' stroke='%2314b866' stroke-width='7.5' stroke-linecap='round'/%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
@@ -79,7 +80,7 @@
         </p>
       </div>
 
-      <!-- Explicit Line Space Added Before Protein Pipeline -->
+      <!-- Protein Pipeline -->
       <div class="mt-8 mb-4">
         <div class="flex items-center justify-center gap-3 mb-4">
           <span class="h-px w-20 bg-slate-700"></span>
@@ -213,11 +214,12 @@
     <!-- TAB 2: LIVE ML + AI AGENT -->
     <section id="tab2" class="hidden flex flex-col space-y-4 py-2">
       
-      <!-- Control Bar -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3 shrink-0">
-        <div class="grid md:grid-cols-12 gap-4 items-end">
+      <!-- Control Bar (Compact Widths for Dropdown, Input & Button) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+        <div class="flex flex-wrap items-end gap-6">
           
-          <div class="md:col-span-5">
+          <!-- Select Target Protein (Compact Width) -->
+          <div class="w-72">
             <label for="proteinSelect" class="block text-sm md:text-base font-extrabold text-slate-100 mb-1.5">
               Select Target Protein
             </label>
@@ -229,16 +231,19 @@
             </select>
           </div>
 
-          <div class="md:col-span-3 relative group">
+          <!-- 1-Point Mutation Input (Compact Width & Initial --Add Input--) -->
+          <div class="relative group">
             <label for="mutationInput" class="block text-sm md:text-base font-extrabold text-slate-100 mb-1.5 flex items-center gap-1.5">
-              <span>Point Mutation (1-Indexed)</span>
+              <span>1-Point Mutation (Eg. G298S)</span>
               <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 text-[11px] font-black cursor-help" title="Not allowed alphabets for Amino acid: B, J, O, U, X, Z">?</span>
             </label>
 
-            <div id="aminoHintPopup" class="hidden group-hover:block group-focus-within:block absolute left-0 -top-10 z-30 px-3 py-1.5 rounded-lg bg-slate-950 border border-cyan-400 text-xs font-bold text-cyan-300 shadow-lg whitespace-nowrap">
+            <!-- Hint Popup on Hover / Focus -->
+            <div class="hidden group-hover:block group-focus-within:block absolute left-0 -top-10 z-30 px-3 py-1.5 rounded-lg bg-slate-950 border border-cyan-400 text-xs font-bold text-cyan-300 shadow-lg whitespace-nowrap">
               Not allowed alphabets for Amino acid: <span class="text-amber-300 font-mono">B, J, O, U, X, Z</span>
             </div>
 
+            <!-- Error Popup -->
             <div id="aminoErrorPopup" class="hidden absolute left-0 -top-11 z-40 px-3.5 py-1.5 rounded-lg bg-maroon border-2 border-maroon text-xs md:text-sm font-extrabold text-white shadow-xl whitespace-nowrap">
               ⚠️ Input valid amino acid code
             </div>
@@ -247,19 +252,20 @@
               id="mutationInput"
               type="text"
               value=""
-              placeholder="Eg. G298S"
+              placeholder="--Add Input--"
               maxlength="5"
-              title="Not allowed alphabets for Amino acid: B, J, O, U, X, Z"
               oninput="validateMutationInput(this)"
-              class="w-28 text-center bg-slate-950 border-2 border-cyan-400 focus:border-emerald-400 focus:outline-none rounded-xl px-2.5 py-2 text-sm md:text-base font-bold text-white font-mono uppercase tracking-wider shadow-sm shadow-cyan-500/20 transition"
+              class="w-40 text-center bg-slate-950 border-2 border-cyan-400 focus:border-emerald-400 focus:outline-none rounded-xl px-3 py-2 text-sm md:text-base font-bold text-white placeholder-slate-400 placeholder:normal-case placeholder:font-sans placeholder:tracking-normal font-mono uppercase tracking-wider shadow-sm shadow-cyan-500/20 transition"
             />
           </div>
 
-          <div class="md:col-span-4 flex items-end">
-            <button id="runBtn" onclick="runAnalysis()" class="w-auto px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm md:text-base shadow-lg shadow-cyan-500/20 transition">
+          <!-- Run Button (Reduced Snug Width) -->
+          <div>
+            <button id="runBtn" onclick="runAnalysis()" class="w-fit px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm md:text-base shadow-lg shadow-cyan-500/20 transition">
               Decode Codon &amp; Run ML →
             </button>
           </div>
+
         </div>
       </div>
 
@@ -278,42 +284,42 @@
             </span>
           </div>
 
-          <div class="space-y-2 my-2">
+          <div class="space-y-3.5 my-3">
             <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-slate-400">Risk - Before Mutation</span>
-                <span id="resWildRisk" class="font-bold text-emerald-400">--%</span>
+              <div class="flex justify-between text-sm md:text-base font-bold mb-1.5">
+                <span class="text-slate-200">Risk - Before Mutation</span>
+                <span id="resWildRisk" class="font-extrabold text-emerald-400">--%</span>
               </div>
-              <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                 <div id="resWildBar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
               </div>
             </div>
 
             <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-slate-400">Risk - After Mutation</span>
-                <span id="resMutRisk" class="font-bold text-maroon-light">--%</span>
+              <div class="flex justify-between text-sm md:text-base font-bold mb-1.5">
+                <span class="text-slate-200">Risk - After Mutation</span>
+                <span id="resMutRisk" class="font-extrabold text-maroon-light">--%</span>
               </div>
-              <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                 <div id="resMutBar" class="h-full bg-maroon transition-all duration-500" style="width: 0%"></div>
               </div>
             </div>
           </div>
 
-          <div>
-            <div class="text-xs font-semibold text-slate-400 mb-1.5 flex justify-between items-center">
-              <span>6 Physical Features (Visual Shift)</span>
-              <span class="text-[10px] text-emerald-400">■ Before | ■ After</span>
+          <!-- Biophysical Feature Shift (Blue Heading + Exact Numbers, No Bars) -->
+          <div class="mt-4 pt-3 border-t border-slate-800/60">
+            <div class="text-sm md:text-base font-extrabold text-sky-400 mb-2.5">
+              <span>Biophysical Feature Shift (Before → After)</span>
             </div>
-            <div id="featureVisualBars" class="space-y-2 text-xs font-mono">
+            <div id="featureVisualBars" class="space-y-2.5 text-xs">
               <div class="text-slate-500 italic">Select protein &amp; run analysis...</div>
             </div>
           </div>
         </div>
 
         <!-- Right 7 Cols -->
-        <div class="md:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col">
-          <div class="border-b border-slate-800 pb-2 mb-2 flex items-center justify-between shrink-0">
+        <div class="md:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col h-full min-h-[380px]">
+          <div class="border-b border-slate-800 pb-2 mb-3 flex items-center justify-between shrink-0">
             <div>
               <span class="text-[11px] text-emerald-400 font-bold uppercase">AI Agent</span>
               <h3 class="text-base font-bold text-white">Findings &amp; Mechanistic Report</h3>
@@ -325,8 +331,8 @@
             </div>
           </div>
           
-          <div id="geminiOutput" class="prose prose-invert prose-sm max-w-none text-slate-300 leading-relaxed overflow-y-auto pr-2 space-y-4" style="max-height: 310px;">
-            Select a target protein, enter a point mutation, and click <strong>"Decode Codon &amp; Run ML →"</strong> above.
+          <div id="geminiOutput" class="prose prose-invert prose-sm max-w-none text-slate-300 leading-relaxed overflow-y-auto pr-3 space-y-4 flex-1">
+            Select a target protein, enter a 1-point mutation, and click <strong>"Decode Codon &amp; Run ML →"</strong> above.
           </div>
         </div>
 
@@ -344,7 +350,6 @@
           <span class="px-4 py-1.5 rounded-full text-sm font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">Technical Overview</span>
         </div>
 
-        <!-- Grid with Increased Width & Font Size (+1pt -> text-base) -->
         <div class="grid md:grid-cols-2 gap-5 text-base">
           <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
             <span class="text-cyan-400 font-black uppercase text-sm tracking-wide">Dataset &amp; UniProt API</span>
@@ -360,7 +365,6 @@
             </p>
           </div>
 
-          <!-- Separator Spacer Before Gemini AI Agent -->
           <div class="md:col-span-2 pt-2">
             <div class="h-px bg-slate-800 w-full"></div>
           </div>
@@ -380,7 +384,6 @@
           </div>
         </div>
 
-        <!-- Separator Spacer Before Biological Glossary -->
         <div class="pt-2">
           <div class="h-px bg-slate-800 w-full"></div>
         </div>
@@ -421,7 +424,7 @@
 
     // Interactive Droplet Canvas
     const canvas = document.getElementById('dropletCanvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas ? canvas.getContext('2d') : null;
     let isMutated = false;
     let tick = 0;
 
@@ -440,7 +443,7 @@
     }
 
     function animateDroplet() {
-      if (!canvas) return;
+      if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
@@ -491,28 +494,42 @@
     const DISALLOWED_LETTERS = new Set(['B','J','O','U','X','Z']);
     let errorPopupTimeout = null;
 
-    function showInvalidAminoPopup() {
+    function showInvalidAminoPopup(msg = '⚠️ Input valid amino acid code (Eg. G298S)') {
       const errPopup = document.getElementById('aminoErrorPopup');
-      const hintPopup = document.getElementById('aminoHintPopup');
-      if (hintPopup) hintPopup.classList.add('hidden');
-      if (errPopup) errPopup.classList.remove('hidden');
+      if (errPopup) {
+        errPopup.textContent = msg;
+        errPopup.classList.remove('hidden');
+      }
       if (errorPopupTimeout) clearTimeout(errorPopupTimeout);
-      errorPopupTimeout = setTimeout(() => { if (errPopup) errPopup.classList.add('hidden'); }, 3000);
+      errorPopupTimeout = setTimeout(() => {
+        if (errPopup) errPopup.classList.add('hidden');
+      }, 3500);
     }
 
     function validateMutationInput(inputEl) {
       const raw = inputEl.value.toUpperCase();
       let cleaned = '';
-      let hadInvalidAmino = false;
+      let hadInvalidChar = false;
+
       for (let i = 0; i < raw.length; i++) {
         const ch = raw[i];
         if (/[A-Z]/.test(ch)) {
-          if (DISALLOWED_LETTERS.has(ch) || !VALID_AMINO_ACIDS.has(ch)) hadInvalidAmino = true;
-          else cleaned += ch;
-        } else if (/[0-9]/.test(ch)) cleaned += ch;
+          if (DISALLOWED_LETTERS.has(ch) || !VALID_AMINO_ACIDS.has(ch)) {
+            hadInvalidChar = true;
+          } else {
+            cleaned += ch;
+          }
+        } else if (/[0-9]/.test(ch)) {
+          cleaned += ch;
+        } else {
+          hadInvalidChar = true;
+        }
       }
+
       inputEl.value = cleaned.slice(0, 5);
-      if (hadInvalidAmino) showInvalidAminoPopup();
+      if (hadInvalidChar) {
+        showInvalidAminoPopup('⚠️ Not allowed amino acid letter (B, J, O, U, X, Z)');
+      }
     }
 
     const DEFAULTS = { TDP43: 'G298S', FUS: 'G156E', TAU: 'P301L' };
@@ -523,12 +540,86 @@
       }
     }
 
+    // Plain-English Feature Labels
+    const FEATURE_LABELS = {
+      'gravy_water_repellency': {
+        name: 'Water-Repellency',
+        desc: 'Does the chain repel water like oil? (More oil-like = pushes proteins into droplets).'
+      },
+      'gravy_score': {
+        name: 'Water-Repellency',
+        desc: 'Does the chain repel water like oil? (More oil-like = pushes proteins into droplets).'
+      },
+      'sticker_velcro_frac': {
+        name: 'Sticky "Velcro" Rings',
+        desc: 'Percentage of ring-shaped letters (F, Y, W) that make strands stick together.'
+      },
+      'aromatic_fraction': {
+        name: 'Sticky "Velcro" Rings',
+        desc: 'Percentage of ring-shaped letters (F, Y, W) that make strands stick together.'
+      },
+      'spacer_flexibility_frac': {
+        name: 'Flexible "Spacer" Hinges',
+        desc: 'Percentage of flexible letters (G, S, P, Q, N) that keep the droplet liquid.'
+      },
+      'disorder_fraction': {
+        name: 'Flexible "Spacer" Hinges',
+        desc: 'Percentage of flexible letters (G, S, P, Q, N) that keep the droplet liquid.'
+      },
+      'net_charge_density': {
+        name: 'Electrical Charge',
+        desc: 'Total positive minus negative charge (controls whether strands attract or repel).'
+      },
+      'net_charge_ph74': {
+        name: 'Electrical Charge',
+        desc: 'Total positive minus negative charge (controls whether strands attract or repel).'
+      },
+      'net_charge': {
+        name: 'Electrical Charge',
+        desc: 'Total positive minus negative charge (controls whether strands attract or repel).'
+      },
+      'isoelectric_point': {
+        name: 'Isoelectric Point',
+        desc: 'The pH balance point of the protein.'
+      },
+      'sticker_to_spacer_ratio': {
+        name: 'Isoelectric Point',
+        desc: 'The pH balance point of the protein.'
+      },
+      'sequence_entropy': {
+        name: 'Sequence Entropy',
+        desc: 'Measures how repetitive the letters are.'
+      },
+      'shannon_entropy': {
+        name: 'Sequence Entropy',
+        desc: 'Measures how repetitive the letters are.'
+      }
+    };
+
+    function cleanReportText(text) {
+      if (!text) return '';
+      return text
+        .replace(/\s*\(TARDBP\)/gi, '')
+        .replace(/\s*\(MAPT\)/gi, '')
+        .replace(/gravy_water_repellency/g, 'Water-Repellency')
+        .replace(/sticker_velcro_frac/g, 'Sticky "Velcro" Rings')
+        .replace(/spacer_flexibility_frac/g, 'Flexible "Spacer" Hinges')
+        .replace(/net_charge_density/g, 'Electrical Charge')
+        .replace(/net_charge_ph74/g, 'Electrical Charge')
+        .replace(/sticker_to_spacer_ratio/g, 'Isoelectric Point')
+        .replace(/isoelectric_point/g, 'Isoelectric Point')
+        .replace(/sequence_entropy/g, 'Sequence Entropy')
+        .replace(/shannon_entropy/g, 'Sequence Entropy')
+        .replace(/\n?\s*(\*\*|###?\s*)?(?:\d+\.\s*)?Layman Summary/gi, '\n\n$1Layman Summary')
+        .replace(/\n?\s*(\*\*|###?\s*)?(?:\d+\.\s*)?Biophysical Mechanism/gi, '\n\n$1Biophysical Mechanism')
+        .replace(/\n?\s*(\*\*|###?\s*)?(?:\d+\.\s*)?Therapeutic Hypothesis/gi, '\n\n$1Therapeutic Hypothesis');
+    }
+
     let lastAnalysisResult = null;
 
     async function runAnalysis() {
       const protein_key = document.getElementById('proteinSelect').value;
       const mutation = document.getElementById('mutationInput').value.trim().toUpperCase();
-      const statusBadge = document.getElementById('statusBadge');
       const geminiOutput = document.getElementById('geminiOutput');
 
       if (!protein_key) {
@@ -536,16 +627,14 @@
         return;
       }
 
-      const match = mutation.match(/^([A-Z])(\d{1,3})([A-Z])$/);
+      // Enforce: 1 valid Amino Acid Letter + 2 or 3 Digits + 1 valid Amino Acid Letter (e.g. G298S)
+      const match = mutation.match(/^([A-Z])(\d{2,3})([A-Z])$/);
       if (!match || !VALID_AMINO_ACIDS.has(match[1]) || !VALID_AMINO_ACIDS.has(match[3])) {
-        showInvalidAminoPopup();
-        alert('Input valid amino acid code');
+        showInvalidAminoPopup('⚠️ Invalid input! Must be Letter + Position + Letter (Eg. G298S)');
         return;
       }
 
-      statusBadge.textContent = 'Running ML + AI Agent...';
-      statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 animate-pulse';
-      geminiOutput.innerHTML = '<p class="text-slate-400">Decoding codon physics & querying AI Agent findings...</p>';
+      geminiOutput.innerHTML = '<p class="text-slate-400 animate-pulse">Decoding codon physics & querying AI Agent findings...</p>';
 
       try {
         const res = await fetch('/api/analyze', {
@@ -553,58 +642,65 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ protein_key, mutation })
         });
+        
+        if (!res.ok) {
+          throw new Error(`Server returned status ${res.status}`);
+        }
+
         const data = await res.json();
         const a = data.analysis;
         lastAnalysisResult = { protein_key, mutation, data };
 
-        document.getElementById('resProtein').textContent = `${a.protein_name} - ${a.disease}`;
+        const cleanProteinName = (a.protein_name || '')
+          .replace(/\s*\(TARDBP\)/gi, '')
+          .replace(/\s*\(MAPT\)/gi, '')
+          .replace(/\s*\(RNA-Binding Protein\)/gi, '')
+          .trim();
+        document.getElementById('resProtein').textContent = `${cleanProteinName} - ${a.disease}`;
         document.getElementById('resCodon').textContent = a.codon_transition;
         document.getElementById('resWildRisk').textContent = `${a.wild_freezing_risk_pct}%`;
         document.getElementById('resWildBar').style.width = `${Math.min(100, a.wild_freezing_risk_pct)}%`;
         document.getElementById('resMutRisk').textContent = `${a.mutated_freezing_risk_pct}% (${a.risk_shift_pct >= 0 ? '+' : ''}${a.risk_shift_pct}%)`;
         document.getElementById('resMutBar').style.width = `${Math.min(100, a.mutated_freezing_risk_pct)}%`;
 
+        // Render Clean Numbers (Before → After) Without Bars
         const featureContainer = document.getElementById('featureVisualBars');
         const wtFeat = a.wild_features || {};
         const mutFeat = a.mutated_features || {};
         
         featureContainer.innerHTML = Object.keys(wtFeat).map(k => {
-          const wVal = Number(wtFeat[k]) || 0.5;
-          const mVal = Number(mutFeat[k]) || 0.6;
-          const maxVal = Math.max(Math.abs(wVal), Math.abs(mVal), 1.0);
-          const wPct = Math.min(100, Math.max(10, (Math.abs(wVal) / maxVal) * 100));
-          const mPct = Math.min(100, Math.max(10, (Math.abs(mVal) / maxVal) * 100));
+          const wVal = Number(wtFeat[k]) || 0;
+          const mVal = Number(mutFeat[k]) || 0;
+          const fallbackName = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          const info = FEATURE_LABELS[k] || { name: fallbackName, desc: 'Biophysical property score.' };
 
           return `
-            <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 space-y-1">
-              <div class="flex justify-between text-[11px] text-slate-300 font-bold">
-                <span>${k}</span>
-                <span class="text-cyan-400">${wVal} → ${mVal}</span>
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">
+              <div class="flex justify-between items-center text-xs font-bold">
+                <span class="text-slate-100">${info.name}:</span>
+                <span class="text-cyan-400 font-mono">${wVal} → ${mVal}</span>
               </div>
-              <div class="space-y-1">
-                <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div class="h-full bg-emerald-500" style="width: ${wPct}%"></div>
-                </div>
-                <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div class="h-full bg-maroon" style="width: ${mPct}%"></div>
-                </div>
-              </div>
+              <p class="text-[11px] text-slate-400 leading-snug">${info.desc}</p>
             </div>
           `;
         }).join('');
 
-        let rawReport = data.gemini_report || '';
+        let rawReport = cleanReportText(data.gemini_report || '');
         let formattedReport = marked.parse(rawReport)
-          .replace(/<h3>Layman Summary/g, '<br><h3>Layman Summary')
-          .replace(/<h3>Biophysical Mechanism/g, '<br><h3>Biophysical Mechanism')
-          .replace(/<h3>Therapeutic Hypothesis/g, '<br><h3>Therapeutic Hypothesis');
+          // Style "Layman Summary (Liquid-to-Solid Freeze)" in Blue
+          .replace(/(?:<h[1-4][^>]*>|<strong>)?(?:\d+\.\s*)?(Layman Summary(?:\s*\([^)]*\))?:?)(?:<\/strong>|<\/h[1-4]>)?/gi,
+            '<span class="block text-sky-400 font-extrabold text-sm md:text-base mb-1">$1</span>')
+          // Add 1 line space + Style "Biophysical Mechanism" in Blue
+          .replace(/(?:<h[1-4][^>]*>|<strong>)?(?:\d+\.\s*)?(Biophysical Mechanism:?)(?:<\/strong>|<\/h[1-4]>)?/gi,
+            '<div class="h-4"></div><span class="block text-sky-400 font-extrabold text-sm md:text-base mb-1">$1</span>')
+          // Add 1 line space + Style "Therapeutic Hypothesis" in Blue
+          .replace(/(?:<h[1-4][^>]*>|<strong>)?(?:\d+\.\s*)?(Therapeutic Hypothesis:?)(?:<\/strong>|<\/h[1-4]>)?/gi,
+            '<div class="h-4"></div><span class="block text-sky-400 font-extrabold text-sm md:text-base mb-1">$1</span>');
 
         geminiOutput.innerHTML = formattedReport;
-        statusBadge.textContent = 'Complete ✓';
-        statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300';
       } catch (err) {
-        geminiOutput.innerHTML = `<p class="text-maroon-light">Error: ${err.message}</p>`;
-        statusBadge.textContent = 'Error';
+        console.error(err);
+        geminiOutput.innerHTML = `<p class="text-maroon-light">Error connecting to server backend: ${err.message}.</p>`;
       }
     }
 
@@ -614,22 +710,29 @@
         return;
       }
       const a = lastAnalysisResult.data.analysis;
+      const cleanProteinName = (a.protein_name || '')
+        .replace(/\s*\(TARDBP\)/gi, '')
+        .replace(/\s*\(MAPT\)/gi, '')
+        .replace(/\s*\(RNA-Binding Protein\)/gi, '')
+        .trim();
+      const cleanedReport = cleanReportText(lastAnalysisResult.data.gemini_report || '').replace(/[#*]/g, '');
+
       const reportText = `DeCodon - 1-Page Summary Report\n` +
         `=====================================\n` +
-        `Target Protein: ${a.protein_name} (${a.disease})\n` +
-        `Mutation: ${lastAnalysisResult.mutation}\n` +
+        `Target Protein: ${cleanProteinName} (${a.disease})\n` +
+        `1-Point Mutation: ${lastAnalysisResult.mutation}\n` +
         `Codon Transition: ${a.codon_transition}\n` +
         `Risk Before Mutation: ${a.wild_freezing_risk_pct}%\n` +
         `Risk After Mutation: ${a.mutated_freezing_risk_pct}% (Shift: +${a.risk_shift_pct}%)\n\n` +
         `Findings & Mechanistic Report:\n` +
         `-------------------------------------\n` +
-        lastAnalysisResult.data.gemini_report.replace(/[#*]/g, '');
+        cleanedReport;
 
       const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `DeCodon_${a.protein_name}_${lastAnalysisResult.mutation}_Report.txt`;
+      link.download = `DeCodon_${cleanProteinName}_${lastAnalysisResult.mutation}_Report.txt`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
