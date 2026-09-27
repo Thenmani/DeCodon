@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeCodon — Decoding Codons in ML Way</title>
+  <!-- SVG Favicon: Exact Match of Your Canva DNA.png -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000000'/%3E%3Cg stroke='%2300b8e6' stroke-width='4.5' stroke-linecap='round'%3E%3Cline x1='37' y1='16' x2='63' y2='16'/%3E%3Cline x1='40' y1='23' x2='60' y2='23'/%3E%3Cline x1='40' y1='40' x2='60' y2='40'/%3E%3Cline x1='36' y1='47' x2='64' y2='47'/%3E%3Cline x1='36' y1='54' x2='64' y2='54'/%3E%3Cline x1='40' y1='61' x2='60' y2='61'/%3E%3Cline x1='40' y1='77' x2='60' y2='77'/%3E%3Cline x1='37' y1='84' x2='63' y2='84'/%3E%3C/g%3E%3Cpath d='M64 11 C 64 29, 36 33, 36 50 C 36 67, 64 71, 64 89' fill='none' stroke='%2300b8e6' stroke-width='7.5' stroke-linecap='round'/%3E%3Cpath d='M36 11 C 36 29, 64 33, 64 50 C 64 67, 36 71, 36 89' fill='none' stroke='%2314b866' stroke-width='7.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* Custom soft maroon classes to replace harsh neon red */
+    .bg-maroon { background-color: #923346; }
+    .bg-maroon-soft { background-color: rgba(146, 51, 70, 0.25); }
+    .border-maroon { border-color: #b54c61; }
+    .text-maroon-light { color: #e28798; }
+    .hover-maroon:hover { background-color: #923346; color: #ffffff; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen overflow-hidden flex flex-col justify-between font-sans select-none">
+
+  <!-- ================= TOP NAVBAR ================= -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur px-6 py-3 shrink-0">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand + Your Canva DNA Icon -->
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-black border border-cyan-500/40 flex items-center justify-center shadow-lg shadow-cyan-500/15 p-1 shrink-0">
+          <svg viewBox="0 0 100 100" class="w-14 h-14">
+            <!-- Solid Cyan Horizontal Rungs (2 Top, 4 Middle, 2 Bottom) -->
+            <g stroke="#00b8e6" stroke-width="4.5" stroke-linecap="round">
+              <line x1="37" y1="16" x2="63" y2="16"/>
+              <line x1="40" y1="23" x2="60" y2="23"/>
+
+              <line x1="40" y1="40" x2="60" y2="40"/>
+              <line x1="36" y1="47" x2="64" y2="47"/>
+              <line x1="36" y1="54" x2="64" y2="54"/>
+              <line x1="40" y1="61" x2="60" y2="61"/>
+
+              <line x1="40" y1="77" x2="60" y2="77"/>
+              <line x1="37" y1="84" x2="63" y2="84"/>
+            </g>
+            <!-- Cyan Strand -->
+            <path d="M64 11 C 64 29, 36 33, 36 50 C 36 67, 64 71, 64 89" fill="none" stroke="#00b8e6" stroke-width="7.5" stroke-linecap="round"/>
+            <!-- Emerald Green Strand (Crossing on Top) -->
+            <path d="M36 11 C 36 29, 64 33, 64 50 C 64 67, 36 71, 36 89" fill="none" stroke="#14b866" stroke-width="7.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white">DeCodon</h1>
+            <span class="text-sm md:text-base font-bold px-3.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+              Physics-Informed ML + AI Agent
+            </span>
+          </div>
+          <!-- 1-Line Space (mt-3) Before Subtitle -->
+          <p class="text-base md:text-lg font-semibold text-slate-200 mt-3">
+            When Cellular "Liquid Droplets" Freeze into ALS &amp; Alzheimer's Disease
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex bg-slate-950 p-1.5 rounded-xl border border-slate-800 shrink-0">
+        <button id="tabBtn1" onclick="switchTab(1)" class="px-5 py-2.5 rounded-lg text-sm font-bold transition bg-cyan-500 text-slate-950">
+          1. The Problem
+        </button>
+        <button id="tabBtn2" onclick="switchTab(2)" class="px-5 py-2.5 rounded-lg text-sm font-bold transition text-slate-400 hover:text-white">
+          2. Live ML + AI Agent ⚡
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN SINGLE-PAGE VIEWPORT ================= -->
+  <main class="max-w-7xl w-full mx-auto px-6 flex-1 flex flex-col justify-evenly overflow-hidden">
+
+    <!-- ================= TAB 1: THE PROBLEM (VISUAL PIPELINE) ================= -->
+    <section id="tab1" class="flex flex-col justify-evenly h-full py-1">
+
+      <!-- Two-Line Headline -->
+      <div class="text-center space-y-1">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-emerald-300 to-cyan-400">
+          Decoding 'Codons' in ML Way
+        </h2>
+        <p class="text-base md:text-lg font-semibold text-white">
+          (To Keep Brain Cells Alive &amp; Fluid)
+        </p>
+      </div>
+
+      <!-- PROTEIN PIPELINE (Bigger Diagrams & Larger Text + 1-Line Space Below Heading) -->
+      <div>
+        <div class="flex items-center justify-center gap-3 mb-3">
+          <span class="h-px w-16 bg-slate-800"></span>
+          <h3 class="text-sm md:text-base font-extrabold uppercase tracking-widest text-cyan-400">
+            Protein Pipeline
+          </h3>
+          <span class="h-px w-16 bg-slate-800"></span>
+        </div>
+
+        <div class="grid grid-cols-5 gap-4 items-stretch">
+
+          <!-- 1. Neuron -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col items-center justify-between relative">
+            <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-cyan-400">1. Neuron</span>
+            <svg viewBox="0 0 140 90" class="w-full h-22 my-1">
+              <path d="M22 18 L46 38 M14 45 L42 45 M22 72 L46 52 M52 14 L52 32 M52 76 L52 58" stroke="#10b981" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="52" cy="45" r="16" fill="#064e3b" stroke="#10b981" stroke-width="3.5"/>
+              <circle cx="52" cy="45" r="6.5" fill="#38bdf8"/>
+              <path d="M68 45 H114" stroke="#38bdf8" stroke-width="4" stroke-dasharray="7 4"/>
+              <path d="M114 45 L128 30 M114 45 L130 45 M114 45 L128 60" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+            <span class="text-sm md:text-base font-bold text-slate-200">Brain &amp; Motor Cell</span>
+            <span class="hidden md:block absolute -right-3.5 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl z-10">→</span>
+          </div>
+
+          <!-- 2. DNA (Blueprint) -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col items-center justify-between relative">
+            <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-cyan-400">2. DNA</span>
+            <svg viewBox="0 0 140 90" class="w-full h-22 my-1">
+              <path d="M14 20 Q 44 62, 74 20 T 126 20" fill="none" stroke="#38bdf8" stroke-width="4"/>
+              <path d="M14 58 Q 44 16, 74 58 T 126 58" fill="none" stroke="#10b981" stroke-width="4"/>
+              <line x1="30" y1="26" x2="30" y2="52" stroke="#94a3b8" stroke-width="2.5"/>
+              <line x1="58" y1="26" x2="58" y2="52" stroke="#94a3b8" stroke-width="2.5"/>
+              <line x1="88" y1="26" x2="88" y2="52" stroke="#94a3b8" stroke-width="2.5"/>
+              <line x1="112" y1="26" x2="112" y2="52" stroke="#94a3b8" stroke-width="2.5"/>
+              <text x="70" y="82" text-anchor="middle" fill="#a7f3d0" font-size="15" font-family="monospace" font-weight="900">A · T · G · C</text>
+            </svg>
+            <span class="text-sm md:text-base font-bold text-slate-200">Blueprint</span>
+            <span class="hidden md:block absolute -right-3.5 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl z-10">→</span>
+          </div>
+
+          <!-- 3. mRNA -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col items-center justify-between relative">
+            <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-cyan-400">3. mRNA</span>
+            <svg viewBox="0 0 140 90" class="w-full h-22 my-1">
+              <path d="M14 32 Q 42 12, 70 32 T 126 32" fill="none" stroke="#38bdf8" stroke-width="4.5"/>
+              <line x1="28" y1="25" x2="28" y2="52" stroke="#10b981" stroke-width="4"/>
+              <line x1="56" y1="27" x2="56" y2="54" stroke="#10b981" stroke-width="4"/>
+              <line x1="84" y1="32" x2="84" y2="58" stroke="#f59e0b" stroke-width="4"/>
+              <line x1="112" y1="27" x2="112" y2="54" stroke="#10b981" stroke-width="4"/>
+              <text x="70" y="82" text-anchor="middle" fill="#67e8f9" font-size="15" font-family="monospace" font-weight="900">A · U · G · C</text>
+            </svg>
+            <span class="text-sm md:text-base font-bold text-slate-200">Single Messenger</span>
+            <span class="hidden md:block absolute -right-3.5 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl z-10">→</span>
+          </div>
+
+          <!-- 4. 3-Letter Codon -->
+          <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3.5 flex flex-col items-center justify-between relative shadow-md shadow-cyan-500/5">
+            <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-emerald-400">4. 3-Letter Codon</span>
+            <svg viewBox="0 0 140 90" class="w-full h-22 my-1">
+              <line x1="18" y1="14" x2="122" y2="14" stroke="#38bdf8" stroke-width="4"/>
+              <circle cx="36" cy="14" r="6" fill="#0284c7"/>
+              <circle cx="70" cy="14" r="6" fill="#0284c7"/>
+              <circle cx="104" cy="14" r="6" fill="#0284c7"/>
+              <polygon points="26,21 46,21 46,58 36,50 26,58" fill="#059669"/>
+              <polygon points="60,21 80,21 80,58 70,50 60,58" fill="#10b981"/>
+              <polygon points="94,21 114,21 114,58 104,50 94,58" fill="#34d399"/>
+              <text x="36" y="44" text-anchor="middle" fill="#020617" font-size="14" font-weight="900">G</text>
+              <text x="70" y="44" text-anchor="middle" fill="#020617" font-size="14" font-weight="900">G</text>
+              <text x="104" y="44" text-anchor="middle" fill="#020617" font-size="14" font-weight="900">T</text>
+              <text x="70" y="82" text-anchor="middle" fill="#6ee7b7" font-size="13" font-family="monospace" font-weight="900">1 Codon = 1 Amino</text>
+            </svg>
+            <span class="text-sm md:text-base font-bold text-emerald-300">Triplet Word</span>
+            <span class="hidden md:block absolute -right-3.5 top-1/2 -translate-y-1/2 text-cyan-400 font-black text-xl z-10">→</span>
+          </div>
+
+          <!-- 5. 20-Letter Protein Strand -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col items-center justify-between">
+            <span class="text-xs md:text-sm font-extrabold uppercase tracking-wider text-cyan-400">5. Protein Strand</span>
+            <svg viewBox="0 0 140 90" class="w-full h-22 my-1">
+              <path d="M16 46 C 22 10, 52 10, 48 42 C 44 70, 76 70, 74 38 C 72 8, 104 10, 100 44 C 98 68, 122 60, 124 30" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="34" cy="22" r="6" fill="#10b981"/>
+              <circle cx="60" cy="57" r="6" fill="#10b981"/>
+              <circle cx="88" cy="22" r="6.5" fill="#b54c61"/>
+              <circle cx="112" cy="52" r="6" fill="#10b981"/>
+              <text x="70" y="82" text-anchor="middle" fill="#a7f3d0" font-size="13" font-family="monospace" font-weight="900">20-Letter Coil</text>
+            </svg>
+            <span class="text-sm md:text-base font-bold text-slate-200">Flexible Spaghetti</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 6. INTERACTIVE CELL SIMULATOR -->
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 shadow-xl">
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+
+          <!-- Left 5 Cols: Bigger Live Droplet Canvas -->
+          <div class="md:col-span-5 bg-slate-950 rounded-xl border border-slate-800 p-2.5 flex flex-col items-center">
+            <canvas id="dropletCanvas" width="380" height="185" class="max-w-full"></canvas>
+            <div id="simCaption" class="text-sm font-extrabold text-emerald-400 mt-1">
+              💧 HEALTHY LIQUID DROPLET • Workers Move Freely
+            </div>
+          </div>
+
+          <!-- Right 7 Cols: Controls with Glycine (G) -> Serine (S) & Solid Cyan Button -->
+          <div class="md:col-span-7 flex flex-col justify-between space-y-3.5">
+            
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-sm md:text-base font-extrabold uppercase tracking-wider text-cyan-400">
+                6. Interactive Cell Simulator
+              </span>
+              <!-- Toggle Buttons with Amino Acid Names -->
+              <div class="flex flex-wrap gap-2">
+                <button id="simHealthyBtn" onclick="setSimState(false)" class="px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-emerald-500 text-slate-950 shadow">
+                  💧 Healthy: Glycine (G)
+                </button>
+                <button id="simMutatedBtn" onclick="setSimState(true)" class="px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-slate-800 text-slate-200 hover-maroon transition">
+                  🧱 1-Letter Mutation: Glycine (G) → Serine (S)
+                </button>
+              </div>
+            </div>
+
+            <!-- 2 Larger Keyword Metric Boxes -->
+            <div class="grid grid-cols-2 gap-4 text-center">
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">Codon Shift</div>
+                <div id="simSequence" class="font-mono text-base md:text-lg font-extrabold text-emerald-300 mt-1">
+                  GGT • Glycine (G) • Flexible
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">Freezing Risk</div>
+                <div id="simRiskLabel" class="text-base md:text-lg font-extrabold text-emerald-400 mt-1">
+                  18% • Fluid
+                </div>
+              </div>
+            </div>
+
+            <!-- Risk Bar -->
+            <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="simRiskBar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 18%"></div>
+            </div>
+
+            <!-- Short, Single-Color Cyan Button (Matches "1. The Problem" Tab Color) -->
+            <div class="flex justify-center pt-0.5">
+              <button onclick="switchTab(2)" class="w-fit px-8 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm md:text-base tracking-wide shadow-lg shadow-cyan-500/20 transition">
+                Test Real Disease Proteins →
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 2: LIVE ML + AI AGENT ================= -->
+    <section id="tab2" class="hidden h-full flex flex-col justify-evenly py-2 space-y-4">
+      
+      <!-- Top Control Bar -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3 shrink-0">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-lg font-bold text-white">Live Physics-Informed ML &amp; AI Agent</h2>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="selectPreset('TDP43', 'G298S')" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 border border-slate-700 transition">
+              ALS: TDP-43 (G298S)
+            </button>
+            <button onclick="selectPreset('FUS', 'G156E')" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 border border-slate-700 transition">
+              ALS: FUS (G156E)
+            </button>
+            <button onclick="selectPreset('TAU', 'P301L')" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-300 border border-slate-700 transition">
+              Alzheimer's: Tau (P301L)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Target Protein</label>
+            <select id="proteinSelect" onchange="updateDefaultMutation()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white">
+              <option value="TDP43">TDP-43 (TARDBP) — ALS</option>
+              <option value="FUS">FUS — Severe ALS / FTD</option>
+              <option value="TAU">Tau (MAPT) — Alzheimer's</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Point Mutation (1-Indexed)</label>
+            <input id="mutationInput" type="text" value="G298S" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white font-mono uppercase" />
+          </div>
+          <div class="flex items-end">
+            <button id="runBtn" onclick="runAnalysis()" class="w-full py-2 px-5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 transition">
+              Decode Codon &amp; Run ML →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="grid md:grid-cols-12 gap-4 flex-1 min-h-0">
+        <!-- Left 5 Cols: Physics & ML Metrics -->
+        <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div>
+              <span class="text-[11px] text-cyan-400 font-bold uppercase">Biophysical ML Output</span>
+              <h3 id="resProtein" class="text-base font-bold text-white">TDP-43 (TARDBP)</h3>
+            </div>
+            <span id="resCodon" class="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono text-xs text-amber-300">
+              GGT (G) → AGT (S)
+            </span>
+          </div>
+
+          <div class="space-y-2 my-2">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-400">Healthy Wild-Type Risk</span>
+                <span id="resWildRisk" class="font-bold text-emerald-400">--%</span>
+              </div>
+              <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                <div id="resWildBar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-400">Mutated Freezing Risk</span>
+                <span id="resMutRisk" class="font-bold text-maroon-light">--%</span>
+              </div>
+              <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+                <div id="resMutBar" class="h-full bg-maroon transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-xs font-semibold text-slate-400 mb-1.5">6 Physics Features (Wild → Mutated)</div>
+            <div id="featureTable" class="space-y-1 text-xs font-mono"></div>
+          </div>
+        </div>
+
+        <!-- Right 7 Cols: AI Agent Report -->
+        <div class="md:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col min-h-0">
+          <div class="border-b border-slate-800 pb-2 mb-2 flex items-center justify-between shrink-0">
+            <div>
+              <span class="text-[11px] text-emerald-400 font-bold uppercase">AI Agent</span>
+              <h3 class="text-base font-bold text-white">Mechanistic &amp; Therapeutic Report</h3>
+            </div>
+            <span id="statusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300">Ready</span>
+          </div>
+          <div id="geminiOutput" class="prose prose-invert prose-sm max-w-none text-slate-300 leading-snug overflow-y-auto pr-2 flex-1">
+            Click <strong>"Decode Codon &amp; Run ML →"</strong> above to run your physics engine, Gradient Boosting classifier, and AI Agent.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= BOTTOM CENTERED FOOTER ================= -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-2 text-center shrink-0">
+    <p class="text-xs md:text-sm font-semibold tracking-wide text-cyan-400/90">
+      Gemini AI powered solution
+    </p>
+  </footer>
+
+  <script>
+    function switchTab(tabNum) {
+      document.getElementById('tab1').classList.toggle('hidden', tabNum !== 1);
+      document.getElementById('tab2').classList.toggle('hidden', tabNum !== 2);
+      document.getElementById('tabBtn1').className = tabNum === 1
+        ? 'px-5 py-2.5 rounded-lg text-sm font-bold transition bg-cyan-500 text-slate-950'
+        : 'px-5 py-2.5 rounded-lg text-sm font-bold transition text-slate-400 hover:text-white';
+      document.getElementById('tabBtn2').className = tabNum === 2
+        ? 'px-5 py-2.5 rounded-lg text-sm font-bold transition bg-cyan-500 text-slate-950'
+        : 'px-5 py-2.5 rounded-lg text-sm font-bold transition text-slate-400 hover:text-white';
+    }
+
+    // Interactive Droplet Canvas
+    const canvas = document.getElementById('dropletCanvas');
+    const ctx = canvas.getContext('2d');
+    let isMutated = false;
+    let tick = 0;
+
+    function setSimState(mutated) {
+      isMutated = mutated;
+      document.getElementById('simHealthyBtn').className = !mutated
+        ? 'px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-emerald-500 text-slate-950 shadow'
+        : 'px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-slate-800 text-slate-300 hover:bg-emerald-500 hover:text-slate-950 transition';
+      document.getElementById('simMutatedBtn').className = mutated
+        ? 'px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-maroon text-white shadow border border-maroon'
+        : 'px-3.5 py-2 rounded-xl font-bold text-xs md:text-sm bg-slate-800 text-slate-200 hover-maroon transition';
+
+      document.getElementById('simCaption').textContent = mutated
+        ? '🧱 FROZEN SOLID BRICK • Cell Workers Trapped!'
+        : '💧 HEALTHY LIQUID DROPLET • Workers Move Freely';
+      document.getElementById('simCaption').className = mutated
+        ? 'text-sm font-extrabold text-maroon-light mt-1'
+        : 'text-sm font-extrabold text-emerald-400 mt-1';
+
+      document.getElementById('simSequence').textContent = mutated
+        ? 'AGT • Serine (S) • Sticky'
+        : 'GGT • Glycine (G) • Flexible';
+      document.getElementById('simSequence').className = mutated
+        ? 'font-mono text-base md:text-lg font-extrabold text-maroon-light mt-1'
+        : 'font-mono text-base md:text-lg font-extrabold text-emerald-300 mt-1';
+
+      document.getElementById('simRiskLabel').textContent = mutated ? '89% • Frozen Solid' : '18% • Fluid';
+      document.getElementById('simRiskLabel').className = mutated
+        ? 'text-base md:text-lg font-extrabold text-maroon-light mt-1'
+        : 'text-base md:text-lg font-extrabold text-emerald-400 mt-1';
+
+      document.getElementById('simRiskBar').style.width = mutated ? '89%' : '18%';
+      document.getElementById('simRiskBar').className = mutated
+        ? 'h-full bg-maroon transition-all duration-500'
+        : 'h-full bg-emerald-500 transition-all duration-500';
+    }
+
+    function animateDroplet() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      tick += isMutated ? 0.01 : 0.05;
+
+      ctx.save();
+      ctx.beginPath();
+      const points = isMutated ? 12 : 40;
+      for (let i = 0; i <= points; i++) {
+        const angle = (i / points) * Math.PI * 2;
+        const wobble = isMutated
+          ? (i % 2 === 0 ? 78 : 63)
+          : 72 + Math.sin(angle * 3 + tick) * 5.5 + Math.cos(angle * 2 - tick) * 4.5;
+        const x = cx + Math.cos(angle) * wobble;
+        const y = cy + Math.sin(angle) * wobble;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = isMutated ? 'rgba(146, 51, 70, 0.28)' : 'rgba(16, 185, 129, 0.16)';
+      ctx.strokeStyle = isMutated ? '#b54c61' : '#10b981';
+      ctx.lineWidth = 3;
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // Coiled Strands Inside Droplet
+      for (let i = 0; i < 5; i++) {
+        const offset = (i - 2) * 16;
+        ctx.beginPath();
+        for (let x = cx - 46; x <= cx + 46; x += 8) {
+          const wave = isMutated ? 0 : Math.sin((x * 0.07) + tick + i) * 6.5;
+          const y = cy + offset + wave;
+          if (x === cx - 46) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = isMutated ? '#d98292' : '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+
+      // Golden Cell Workers
+      for (let i = 0; i < 5; i++) {
+        const angle = tick * (isMutated ? 0.05 : 0.8) + i * 1.25;
+        const dist = isMutated ? 24 : 36 + Math.sin(tick + i) * 25;
+        const wx = cx + Math.cos(angle) * dist;
+        const wy = cy + Math.sin(angle) * dist;
+        ctx.beginPath();
+        ctx.arc(wx, wy, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#fbbf24';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animateDroplet);
+    }
+    animateDroplet();
+
+    const DEFAULTS = { TDP43: 'G298S', FUS: 'G156E', TAU: 'P301L' };
+    function updateDefaultMutation() {
+      const p = document.getElementById('proteinSelect').value;
+      document.getElementById('mutationInput').value = DEFAULTS[p] || 'G298S';
+    }
+
+    function selectPreset(protein, mut) {
+      document.getElementById('proteinSelect').value = protein;
+      document.getElementById('mutationInput').value = mut;
+      runAnalysis();
+    }
+
+    async function runAnalysis() {
+      const protein_key = document.getElementById('proteinSelect').value;
+      const mutation = document.getElementById('mutationInput').value.trim();
+      const statusBadge = document.getElementById('statusBadge');
+      const geminiOutput = document.getElementById('geminiOutput');
+
+      statusBadge.textContent = 'Running ML + AI Agent...';
+      statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 animate-pulse';
+      geminiOutput.innerHTML = '<p class="text-slate-400">Decoding codon physics & querying AI Agent...</p>';
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ protein_key, mutation })
+        });
+        const data = await res.json();
+        const a = data.analysis;
+
+        document.getElementById('resProtein').textContent = `${a.protein_name} — ${a.disease}`;
+        document.getElementById('resCodon').textContent = a.codon_transition;
+        document.getElementById('resWildRisk').textContent = `${a.wild_freezing_risk_pct}%`;
+        document.getElementById('resWildBar').style.width = `${Math.min(100, a.wild_freezing_risk_pct)}%`;
+        document.getElementById('resMutRisk').textContent = `${a.mutated_freezing_risk_pct}% (${a.risk_shift_pct >= 0 ? '+' : ''}${a.risk_shift_pct}%)`;
+        document.getElementById('resMutBar').style.width = `${Math.min(100, a.mutated_freezing_risk_pct)}%`;
+
+        const table = document.getElementById('featureTable');
+        table.innerHTML = '';
+        Object.keys(a.wild_features).forEach(k => {
+          const w = a.wild_features[k];
+          const m = a.mutated_features[k];
+          const d = a.physics_deltas[k];
+          table.innerHTML += `
+            <div class="flex justify-between items-center px-2.5 py-1 rounded bg-slate-950 border border-slate-800">
+              <span class="text-slate-400">${k}</span>
+              <span class="text-slate-200">${w} → <strong>${m}</strong> <span class="${d >= 0 ? 'text-amber-400' : 'text-cyan-400'}">(${d >= 0 ? '+' : ''}${d})</span></span>
+            </div>`;
+        });
+
+        geminiOutput.innerHTML = marked.parse(data.gemini_report);
+        statusBadge.textContent = 'Complete ✓';
+        statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300';
+      } catch (err) {
+        geminiOutput.innerHTML = `<p class="text-maroon-light">Error: ${err.message}</p>`;
+        statusBadge.textContent = 'Error';
+      }
+    }
+  </script>
+</body>
+</html>
